@@ -1,0 +1,103 @@
+@startuml
+class br.com.banco.Banco {
+~ String nome
+- List<Conta> contas
++ String getNome()
++ List<Conta> getContas()
++ void setNome(String)
++ void adicionarConta(Conta)
++ String toString()
+}
+
+
+class br.com.banco.conta.ContaCorrente {
+- BigDecimal limite
++ void setLimite(BigDecimal)
++ BigDecimal getLimite()
++ void sacar(BigDecimal)
++ void mostraSaldo()
++ String toString()
+}
+
+
+class br.com.banco.conta.util.BigDecimalUtil {
+- {static} int CASAS_DECIMAIS
+- {static} RoundingMode ARREDONDAMENTO
++ {static} BigDecimal padronizarCasasDecimais(BigDecimal)
+}
+
+
+interface br.com.banco.conta.TransacoesContaBancaria {
+~ void depositar(BigDecimal)
+~ void sacar(BigDecimal)
+~ void mostraSaldo()
+}
+
+class br.com.banco.conta.Exception.SaldoInsuficienteException {
+}
+class br.com.banco.conta.Exception.SaqueInvalidoException {
+}
+class br.com.banco.conta.Exception.LimiteDeSaqueAtingidoException {
+}
+class br.com.banco.conta.ContaPoupanca {
+- BigDecimal TAXA_JUROS
++ void depositar(BigDecimal)
+- void aplicarJuros()
++ String toString()
+}
+
+
+class br.com.banco.conta.Exception.DepositoInvalidoException {
+}
+class br.com.banco.conta.ContaSalario {
+- Map<Month,Integer> contagemSaquesMap
+- Month mes
++ void setMes(Month)
++ Month getMes()
++ Map<Month,Integer> getContagemSaquesMap()
+- void insereMesAtual(Month,Integer)
+- boolean isMesAtual(Month)
++ void sacar(BigDecimal)
++ String toString()
+}
+
+
+class br.com.banco.conta.Exception.LimiteEspecialInvalidoException {
+}
+abstract class br.com.banco.conta.Conta {
+- Banco banco
+- String titular
+- int agencia
+- int numero
+- BigDecimal saldo
++ Banco getBanco()
++ String getTitular()
++ int getAgencia()
++ int getNumero()
++ BigDecimal getSaldo()
+# void setBanco(Banco)
+# void setTitular(String)
+# void setAgencia(int)
+# void setNumero(int)
+# void setSaldo(BigDecimal)
++ void depositar(BigDecimal)
++ void sacar(BigDecimal)
++ void mostraSaldo()
++ boolean equals(Object)
++ int hashCode()
++ String toString()
+}
+
+
+
+
+br.com.banco.conta.Conta <|-- br.com.banco.conta.ContaCorrente
+br.com.banco.conta.Exception.RuntimeException <|-- br.com.banco.conta.Exception.SaldoInsuficienteException
+br.com.banco.conta.Exception.RuntimeException <|-- br.com.banco.conta.Exception.SaqueInvalidoException
+br.com.banco.conta.Exception.RuntimeException <|-- br.com.banco.conta.Exception.LimiteDeSaqueAtingidoException
+br.com.banco.conta.Conta <|-- br.com.banco.conta.ContaPoupanca
+br.com.banco.conta.Exception.RuntimeException <|-- br.com.banco.conta.Exception.DepositoInvalidoException
+br.com.banco.conta.Conta <|-- br.com.banco.conta.ContaSalario
+br.com.banco.conta.Exception.RuntimeException <|-- br.com.banco.conta.Exception.LimiteEspecialInvalidoException
+br.com.banco.conta.TransacoesContaBancaria <|.. br.com.banco.conta.Conta
+@enduml
